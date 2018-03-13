@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Jodohku</string>
+    <string-array name="gender">
+        <item>Laki-laki</item>
+        <item>Perempuan</item>
+    </string-array>
+
+    <string name="title_activity_maps">Map</string>
+</resources>
