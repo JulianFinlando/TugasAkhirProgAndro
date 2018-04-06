@@ -33,6 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private DatabaseReference users;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
@@ -58,6 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mName = (EditText) findViewById(R.id.name);
         mLogin = (TextView)findViewById(R.id.masuk);
         spinner=(Spinner)findViewById(R.id.gender);
+
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.gender, android.R.layout.simple_spinner_item);

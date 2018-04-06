@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import android.content.pm.PackageManager;
@@ -25,6 +28,9 @@ import android.Manifest;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
+import com.firebase.geofire.core.GeoHash;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,21 +42,29 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
+    private FirebaseAuth mAuth;
+    private Button btnCari;
     LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
     private  LocationCallback mLocationCallback;
-
+    private LatLng pickupLocation;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
 
@@ -67,9 +81,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermission();
         }
-        else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1){
 
-        }
+        mAuth = FirebaseAuth.getInstance();
+
+        btnCari = (Button)findViewById(R.id.cariUser);
+
+        btnCari.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userId = mAuth.getCurrentUser().getUid();
+                DatabaseReference cari = FirebaseDatabase.getInstance().getReference().child("pencarian");
+                GeoFire geoFire = new GeoFire(cari);
+                geoFire.setLocation(userId, new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                pickupLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(pickupLocation).title("Here"));
+            }
+        });
 
     }
 
@@ -81,7 +108,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     1);
-
         }
     }
 
@@ -109,14 +135,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLastLocation = location;
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("usersAvailable");
+        GeoFire geoFire = new GeoFire(users);
+        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+
+        //GeoHash geoHash = new GeoHash(new GeoLocation(location.getLatitude(), location.getLongitude()));
+        Map newGeo = new HashMap<>();
+        //newGeo.put("g", geoHash.getGeoHashString());
+        //newGeo.put("l", Arrays.asList(location.getLatitude(), location.getLongitude()));
+        users.updateChildren(newGeo);
 
     }
-
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -181,6 +216,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void onStop(){
+        super.onStop();
+        String userId = mAuth.getCurrentUser().getUid();
+        DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("usersAvailable");
+        GeoFire geoFire = new GeoFire(users);
+        geoFire.removeLocation(userId);
+
+        DatabaseReference cari = FirebaseDatabase.getInstance().getReference().child("pencarian");
+        GeoFire geoFire2 = new GeoFire(cari);
+        geoFire2.removeLocation(userId);
     }
 
 }
