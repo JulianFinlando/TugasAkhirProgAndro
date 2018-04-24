@@ -29,7 +29,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ChooseLoginRegistrationActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".CariTemanActivity" />
         <activity
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity" />
@@ -50,7 +51,6 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".LoginActivity" />
-
     </application>
 
 </manifest>

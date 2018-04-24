@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private CardView menuMap,menuProfil;
+    private CardView menuMap,menuProfil,menuCari;
     private Button keluar;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
@@ -30,14 +30,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         keluar =(Button) findViewById(R.id.btnKeluar);
         menuMap = (CardView) findViewById(R.id.cardMap);
         menuProfil = (CardView) findViewById(R.id.cardProfil);
+        menuCari = (CardView) findViewById(R.id.cardCari);
 
 
         keluar.setOnClickListener(this);
         menuMap.setOnClickListener(this);
         menuProfil.setOnClickListener(this);
+        menuCari.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
@@ -52,9 +55,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 i = new Intent(this, LoginActivity.class);
                 FirebaseAuth.getInstance().signOut();
                 startActivity(i);
-
+                break;
             case R.id.cardProfil:
                 i = new Intent(this, ProfileActivity.class);
+                startActivity(i);
+                break;
+            case R.id.cardCari:
+                i = new Intent(this, CariTemanActivity.class);
                 startActivity(i);
                 break;
             default:
