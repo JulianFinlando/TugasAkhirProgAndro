@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "544342182408-tast1g6bd7giov212na5blkq0lob99pb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "industries.julian.jodohku",
+            "certificate_hash": "461340994cd3507b67aa1e4019da01bb0dd07214"
+          }
+        },
+        {
           "client_id": "544342182408-krfnbrbkssl7av4h4tklcjdmb1n0t5ga.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
