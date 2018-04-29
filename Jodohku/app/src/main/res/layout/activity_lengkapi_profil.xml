@@ -22,11 +22,7 @@
         android:textSize="10pt"
         />
 
-<<<<<<< Updated upstream
     <ImageView
-=======
-    <de.hdodenhof.circleimageview.CircleImageView
->>>>>>> Stashed changes
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:id="@+id/fotoProfil"

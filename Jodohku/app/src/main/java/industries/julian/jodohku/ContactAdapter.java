@@ -7,28 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
-public class TemanAdapter extends RecyclerView.Adapter<TemanAdapter.TemanHolder> {
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactHolder> {
     private List<Teman> listTeman;
     private Context mContext;
 
-    public TemanAdapter(List<Teman> listTeman, Context context){
+    public ContactAdapter(List<Teman> listTeman, Context context){
         this.listTeman = listTeman;
         this.mContext = context;
     }
     //konversi layout item_teman.xml ke bentuk java
     @Override
-    public TemanHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ContactHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_teman, parent,false);
-        return new TemanHolder(itemView);
+        return new ContactHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(TemanHolder holder, int position) {
+    public void onBindViewHolder(ContactAdapter.ContactHolder holder, int position) {
         Teman teman = listTeman.get(position);
         holder.txvNamaLengkap.setText(teman.nama_lengkap);
         holder.txvJenisKelamin.setText(teman.jenis_kelamin);
@@ -39,10 +38,10 @@ public class TemanAdapter extends RecyclerView.Adapter<TemanAdapter.TemanHolder>
         return listTeman.size();
     }
 
-    public class TemanHolder extends RecyclerView.ViewHolder{
+    public class ContactHolder extends RecyclerView.ViewHolder{
         Intent i;
         private TextView txvNamaLengkap, txvJenisKelamin;
-        public TemanHolder(View itemView){
+        public ContactHolder(View itemView){
             super(itemView);
             mContext = itemView.getContext();
 
@@ -54,7 +53,7 @@ public class TemanAdapter extends RecyclerView.Adapter<TemanAdapter.TemanHolder>
                     /*Toast.makeText(mContext, "Teman ini bernama "+txvNamaLengkap.getText()
                             .toString(), Toast.LENGTH_LONG).show();*/
                     final Intent intent;
-                    intent =  new Intent(mContext, ProfileActivity.class);
+                    intent =  new Intent(mContext, ChatActivity.class);
                     mContext.startActivity(intent);
                 }
             });

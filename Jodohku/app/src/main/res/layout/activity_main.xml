@@ -99,11 +99,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"
-<<<<<<< Updated upstream
                     android:text="Saran Pasangan"/>
-=======
-                    android:text="Cari Pasangan"/>
->>>>>>> Stashed changes
 
                 <View
                     android:layout_width="match_parent"
@@ -118,11 +114,7 @@
                     android:padding="5dp"
                     android:textSize="10sp"
                     android:textColor="@color/black_overlay"
-<<<<<<< Updated upstream
                     android:text="Lihat rekomendasi pasangan"/>
-=======
-                    android:text="Temukan Pasangamu Sekarang"/>
->>>>>>> Stashed changes
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
