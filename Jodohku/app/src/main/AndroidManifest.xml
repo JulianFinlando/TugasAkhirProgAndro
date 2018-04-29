@@ -9,7 +9,10 @@
     -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< Updated upstream
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+=======
+>>>>>>> Stashed changes
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -28,10 +31,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< Updated upstream
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".LoginActivity" />
+=======
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ChooseLoginRegistrationActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".CariTemanActivity"></activity>
+        <activity android:name=".ChatActivity"></activity>
+>>>>>>> Stashed changes
         <activity
             android:name=".RegistrationActivity"
             android:parentActivityName=".LoginActivity" />
@@ -54,6 +66,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+<<<<<<< Updated upstream
+=======
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".LoginActivity" />
+
+>>>>>>> Stashed changes
     </application>
 
 </manifest>

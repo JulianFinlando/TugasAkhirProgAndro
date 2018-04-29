@@ -113,7 +113,11 @@ public class LengkapiProfilActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+<<<<<<< Updated upstream
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+=======
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+>>>>>>> Stashed changes
                     byte[] data = baos.toByteArray();
                     UploadTask uploadTask = filePath.putBytes(data);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -131,12 +135,44 @@ public class LengkapiProfilActivity extends AppCompatActivity {
                             newImage.put("fotoProfilUrl", downloadUri.toString());
                             currentUserDb.updateChildren(newImage);
 
+<<<<<<< Updated upstream
                             finish();
                             return;
                         }
                     });
                 }
                 Toast.makeText(LengkapiProfilActivity.this,"Registrasi Berhasil", Toast.LENGTH_LONG).show();
+=======
+
+                        }
+                    });
+                    Intent intent = new Intent(getApplication(), MainActivity.class);
+                    startActivity(intent);
+
+                    Toast.makeText(LengkapiProfilActivity.this,"Registrasi Berhasil", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+    }
+    public void getUserInfo(){
+        currentUserDb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    if(map.get("fotoProfilUrl") != null){
+                        mProfileUrl = map.get("fotoProfilUrl").toString();
+                        Glide.with(getApplication()).load(mProfileUrl).into(FotoProfil);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+>>>>>>> Stashed changes
             }
         });
 
@@ -159,6 +195,14 @@ public class LengkapiProfilActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            final Uri imageUri = data.getData();
+            resultUri = imageUri;
+            FotoProfil.setImageURI(resultUri);
+        }
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);

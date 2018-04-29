@@ -41,7 +41,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+<<<<<<< Updated upstream
+=======
+import com.google.android.gms.maps.model.Marker;
+>>>>>>> Stashed changes
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -50,8 +55,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+<<<<<<< Updated upstream
 import java.util.Arrays;
 import java.util.HashMap;
+=======
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+>>>>>>> Stashed changes
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
@@ -86,6 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         btnCari = (Button)findViewById(R.id.cariUser);
 
+<<<<<<< Updated upstream
         btnCari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +110,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(pickupLocation).title("Here"));
             }
         });
+=======
+
+>>>>>>> Stashed changes
 
     }
 
@@ -137,10 +153,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLastLocation = location;
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
         String userId = mAuth.getCurrentUser().getUid();
+<<<<<<< Updated upstream
         DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("usersAvailable");
         GeoFire geoFire = new GeoFire(users);
         geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
@@ -151,6 +168,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //newGeo.put("l", Arrays.asList(location.getLatitude(), location.getLongitude()));
         users.updateChildren(newGeo);
 
+=======
+        final DatabaseReference users = FirebaseDatabase.getInstance().getReference().child("usersAvailable");
+        GeoFire geoFire = new GeoFire(users);
+        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+
+        //GeoHash geoHash = new GeoHash(new GeoLocation(location.getLatitude(), location.getLongitude()));
+        Map newGeo = new HashMap<>();
+        //newGeo.put("g", geoHash.getGeoHashString());
+        //newGeo.put("l", Arrays.asList(location.getLatitude(), location.getLongitude()));
+        users.updateChildren(newGeo);
+
+        final List<Marker> markers = new ArrayList<Marker>();
+        GeoQuery q = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 10000);
+        //GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLongitude(), location.getLatitude()), 10000);
+        q.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                for(Marker markerIt : markers){
+                    if(markerIt.getTag().equals(key))
+                        return;
+                }
+                Marker mUserMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(key).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_foreground)));
+                mUserMarker.setTag(key);
+
+                markers.add(mUserMarker);
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+                for(Marker markerIt : markers){
+                    if(markerIt.getTag().equals(key)){
+                        markerIt.remove();
+                    }
+                }
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+                for(Marker markerIt : markers){
+                    if(markerIt.getTag().equals(key)){
+                        markerIt.setPosition(new LatLng(location.latitude, location.longitude));
+                    }
+                }
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+>>>>>>> Stashed changes
     }
 
     @Override
@@ -206,7 +279,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
-
 
     @Override
     public void onConnectionSuspended(int i) {
